@@ -1,0 +1,23 @@
+        <field name="manifest_line" mode="tree,kanban" nolabel="1" >
+                                    <tree editable="bottom">
+                                        <!-- <field name="res_partner" domain="[('travel_type', '=', 'airline')]" required="True"/> -->
+                                        <field name="title" /> 
+                                        <field name="nama_passport" string="Nama Passport" />
+                                        <field name="jenis_kelamin" string="Jenis Kelamin" />
+                                        <field name="no_ktp" string="No. KTP" />
+                                        <field name="no_passport" string="No. Passport" />
+                                        <field name="tanggal_lahir" string="Tanggal Lahir" />
+                                        <field name="tempat_lahir" string="Tempat Lahir" />
+                                        <field name="tanggal_berangkat" string="Tanggal Berangkat" /> 
+                                        <field name="tanggal_expired" string="Tanggal Expired" />
+                                        <field name="tanggal_berangkat" string="Tanggal Berangkat" /> 
+                                       <field name="imigrasi" string="Imigrsi" /> 
+                                       <field name="tipe_kamar" string="Tipe Kamar" /> 
+                                        <field name="mahrom" string="Mahrom" /> 
+                                        <field name="agent" string="Agent" /> 
+
+                                       
+                                        
+                                        
+                                    </tree>
+                                </field>

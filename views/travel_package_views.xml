@@ -1,0 +1,167 @@
+<odoo>
+    <data>
+
+        <!-- Membuat View Tree/List Attendee -->
+
+        <record id="travel_package_view_tree" model="ir.ui.view">
+            <field name="name">travel.package.tree</field>
+            <field name="model">travel.package</field>
+            <field name="arch" type="xml">
+                <tree string="Travel List">
+                    <field name="name"/>
+                    <field name="departure_date"/>
+                    <field name="return_date"/>
+                    <field name="quota_progress"/>
+                    <field name="state"/>
+                    <field name="quota"/>
+
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="travel_package_form_view" model="ir.ui.view">
+            <field name="name">travel.package.form</field>
+            <field name="model">travel.package</field>
+            <field name="arch" type="xml">
+
+                <form string="Travel Package">
+                    <header>
+                        <button name="package_open" type="object" states="draft" string="Confirm" class="oe_highlight" />
+                        <button name="package_draft" type="object" states="confirm" string="Set to Draft" style="background-color:#e9ecef;"/>
+                        <button name="update_jamaah" type="object" states="confirm" string="Update Jamaah" class="oe_highlight" />
+                        <button name="package_done" type="object" states="confirm" string="Done" class="oe_highlight" />
+                        <button name="print_manifest" type="object" states="confirm" string="Cetak Manifest" style="background-color:#e9ecef;" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <div>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <h2 style="color:#008DCA; width:100%;">Informasi Jadwal</h2>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="departure_date" />
+                            <field name="return_date"/>
+                        </group>
+                        <div class="oe_title">
+                            <h1>
+                                <h2 style="color:#008DCA; width:100%;">Produk</h2>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="product_sale_id" />
+                            <field name="product_package_id" string="Package"/>
+                        </group>
+                        <div class="oe_title">
+                            <h1>
+                                <h2 style="color:#008DCA; width:100%;">Seats</h2>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="quota" />
+                            <field name="quota_progress" widget="progressbar"/>
+                            <field name="remaining_quota" />
+
+                        </group>
+
+                        <notebook>
+                            <page string="Hotel Lines">
+                                <field name="hotel_line" widget="one2many_list" mode="tree,kanban" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="hotel_id" domain="[('travel_type', '=', 'hotel')]" required="True"/>
+                                        <field name="check_in_hotel" required="True"/>
+                                        <field name="check_out_hotel" required="True"/>
+                                        <field name="city" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Airline Lines">
+                                <field name="airline_line" widget="one2many_list" mode="tree,kanban" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="airline_name_id" domain="[('travel_type', '=', 'airline')]" required="True"/>
+                                        <field name="tanggal_berangkat" required="True"/>
+                                        <field name="kota_asal" required="True"/>
+                                        <field name="kota_tujuan" required="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Schedule Lines">
+                                <field name="schedule_line" widget="one2many_list" mode="tree,kanban" nolabel="1">
+                                    <tree editable="bottom">
+                                        <!-- <field name="res_partner" domain="[('travel_type', '=', 'airline')]" required="True"/> -->
+                                        <field name="nama_kegiatan" required="True"/>
+                                        <field name="tanggal_kegiatan" required="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Manifest">
+                                <field name="manifest_line" mode="tree,kanban" nolabel="1">
+                                    <tree create="0">
+                                        <!-- <field name="res_partner" domain="[('travel_type', '=', 'airline')]" required="True"/> -->
+                                        <field name="title" />
+                                        <field name="nama_passport" string="Nama Passport" />
+                                        <field name="jenis_kelamin" string="Jenis Kelamin" />
+                                        <field name="no_ktp" string="No. KTP" />
+                                        <field name="no_passport" string="No. Passport" />
+                                        <field name="tanggal_lahir" string="Tanggal Lahir" />
+                                        <field name="tempat_lahir" string="Tempat Lahir" />
+                                        <field name="tanggal_berlaku" string="Tanggal Berlaku" />
+                                        <field name="tanggal_expired" string="Tanggal Expired" />
+                                        <!-- <field name="tanggal_berangkat" string="Tanggal Berangkat" />  -->
+                                        <field name="imigrasi" string="Imigrasi" />
+                                        <field name="tipe_kamar" string="Tipe Kamar" />
+                                        <field name="mahrom" string="Mahrom" />
+                                        <field name="agent" string="Agent" />
+                                        <!-- <field name="order" string="Order" />  -->
+
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Hpp Lines">
+                                <field name="hpp_line" mode="tree">
+                                    <tree editable="bottom">
+
+                                        <field name="product_id" string="Barang" />
+                                        <field name="product_qty" string="Quantity" />
+                                        <field name="product_uom_id" string="Unit(s)" />
+                                        <field name="unit_price" string="Unit Price" />
+                                        <field name="sub_total" string="Sub Total" />
+
+
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="payment_total">
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="amount_total" />
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Action/Event Travel Package -->
+        <record id="travel_package_action" model="ir.actions.act_window">
+            <field name="name">Travel Package</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">travel.package</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                No travel package found. Let's create one!
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+ 

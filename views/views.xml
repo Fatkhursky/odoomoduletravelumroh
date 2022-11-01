@@ -1,0 +1,204 @@
+<odoo>
+    <data>
+
+        <!-- Membuat Action/Event Produk-->
+        <record id="produk_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="context">{"search_default_consumable":1, "purchase_product_template": 1}</field>
+            <field name="search_view_id" ref="product.product_template_search_view"/>
+            <field name="view_id" eval="False"/>
+            <!-- Force empty -->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+        No product found. Let's create one!
+                </p>
+                <p>
+        You must define a product for everything you sell or purchase,
+        whether it's a storable product, a consumable or a service.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Action/Event Customer Invoice -->
+        <record id="customer_action" model="ir.actions.act_window">
+            <field name="name">Customer Invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                No invoice found. Let's create one!
+                </p>
+            </field>
+        </record>
+
+        <!-- Membuat Action/Event Paket Produk-->
+        <record id="mrp_bom_form_action" model="ir.actions.act_window">
+            <field name="name">Paket Produk</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.bom</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'default_company_id': allowed_company_ids[0]}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                No bill of materials found. Let's create one!
+                </p>
+                <p>
+                Bills of materials allow you to define the list of required raw
+                materials used to make a finished product; through a manufacturing
+                order or a pack of products.
+                </p>
+            </field>
+        </record>
+
+        <!-- Membuat Additional Form res.partner -->
+        <record id="jamaah_view_form" model="ir.ui.view">
+            <field name="name">jamaah.res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+
+
+            <field name="arch" type="xml">
+
+                <!-- Hide Type Company -->
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+
+
+                <page name="sales_purchases">
+                    <xpath expr="//field[@name='sales_purchases']" position="after">
+                        <group >
+                            <h2 style="width:100%;">Travel</h2>
+                        </group>
+
+                        <field name="travel_type" widget="radio" options="{'vertical': true}"/>
+
+
+                    </xpath>
+                </page>
+
+
+                <group >
+                    <h2 style="color:#008DCA; width:100%; background-color:#E5EDEC;">Additional Information</h2>
+                </group>
+
+                <!-- Additional Information -->
+                <group>
+                    <group >
+                        <field string='No. KTP' name="no_ktp"/>
+                        <field string='Nama Ayah' name="nama_ayah"/>
+                        <field string='Pekerjaan Ayah' name="pekerjaan_ayah"/>
+                        <field string='Tempat Lahir' name="tempat_lahir"/>
+                        <field string='Pendidikan' name="pendidikan_terakhir"/>
+                        <field string='Status Hubungan' name="status_pernikahan" />
+                    </group>
+                    <group>
+                        <field string='Jenis Kelamin' name="jenis_kelamin"/>
+                        <field string='Nama Ibu' name="nama_ibu"/>
+                        <field string='Pekerjaan Ibu' name="pekerjaan_ibu"/>
+                        <field string='Tanggal Lahir' name="tanggal_lahir"/>
+                        <field string='Golongan Darah' name="golongan_darah"/>
+                        <field string='Ukuran Baju' name="ukuran_baju" />
+                    </group>
+                </group>
+
+                <group >
+                    <h2 style="color:#008DCA; width:100%; background-color:#E5EDEC;">Passport Information</h2>
+                </group>
+
+                <!-- Passport Information -->
+                <group>
+                    <group >
+                        <field string='No. Passport' name="no_passport"/>
+                        <field string='Tanggal Berlaku' name="tanggal_berlaku"/>
+                        <field string='Imigrasi' name="imigrasi"/>
+                    </group>
+                    <group >
+                        <field string='Nama Passport' name="nama_passport"/>
+                        <field string='Tanggal Expired' name="tanggal_expired"/>
+                        <!-- <field name="travel_type" widget="radio" options="{'vertical': true}"/> -->
+                    </group>
+                </group>
+
+                <group >
+                    <h2 style="color:#008DCA;width:100%; background-color:#E5EDEC;">Scan Document</h2>
+                </group>
+
+                <!-- Scan Document -->
+                <group>
+                    <group>
+                        <field name="scan_passport" string='Scan Passport' widget='image' />
+                        <field name="scan_ktp" string='Scan KTP' widget='image' />
+                    </group>
+                    <group >
+                        <field name="scan_buku_nikah" string='Scan Buku Nikah' widget='image' />
+                        <field name="scan_kartu_keluarga" string='Scan Akte Kelahiran' widget='image' />
+                    </group>
+                </group>
+
+            </field>
+        </record>
+
+
+        <!-- Inherited and add button print stock picking -->
+
+        <record id="stock_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='do_print_picking']" position="before">
+                    <button name="print_delivery" type="object" states="done" string="Print Delivery" style="background-color:#008DCA; color:white;" />
+                </xpath>
+            </field>
+        </record>
+
+        <!--Add Filter Airline & Hotel-->
+        <record id="view_sale_order_inherit_search" model="ir.ui.view">
+            <field name="name">sale.order.search.expand.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="Airline" name="is_airline" domain="[('travel_type', '=', 'airline')]"/>
+                    <filter string="Hotel" name="is_hotel" domain="[('travel_type', '=', 'hotel')]"/>
+
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Menu Dashboard -->
+        <menuitem id="menu_dashboard_travel_umroh" name="Travel Umroh" web_icon="ab_travel_umroh,static/description/icon.png"/>
+
+        <!-- List Menu Bar Master Data & Transaction -->
+        <menuitem id="menu_bar_master_data" name="Master Data" parent="menu_dashboard_travel_umroh" sequence="1"/>
+        <menuitem id="menu_bar_transaction" name="Transaction" parent="menu_dashboard_travel_umroh" sequence="2"/>
+
+        <!-- List Menu Item Master Data -->
+        <menuitem id="menu_item_produk_umroh" name="Produk" parent="menu_bar_master_data" action="produk_action" sequence="1"/>
+        <menuitem id="menu_item_paket_produk_umroh" name="Paket Produk" action="mrp_bom_form_action" parent="menu_bar_master_data" sequence="2"/>
+        <menuitem id="menu_item_jamaah_umroh" name="Jamaah" parent="menu_bar_master_data" action="jamaah_action" sequence="3"/>
+        <menuitem id="menu_item_airlines_umroh" name="Airlines" parent="menu_bar_master_data" action="airlines_action" sequence="4"/>
+        <menuitem id="menu_item_hotels_umroh" name="Hotels" parent="menu_bar_master_data" action="hotels_action" sequence="5"/>
+
+        <!-- List Menu Item Transaction -->
+
+        <menuitem id="menu_item_travel_package" name="Travel Package" parent="menu_bar_transaction" action="travel_package_action" sequence="1"/>
+        <menuitem id="menu_item_sales_order" name="Sales Order" parent="menu_bar_transaction" action="sale_order_action" sequence="2"/>
+        <menuitem id="menu_item_customer_invoice" name="Customer Invoice" parent="menu_bar_transaction" action="customer_action" sequence="3"/>
+
+    </data>
+
+</odoo>
+
+
+
+

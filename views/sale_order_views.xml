@@ -1,0 +1,95 @@
+<odoo>
+    <data>
+        <!-- Membuat Action/Event Sales Order -->
+        <record id="sale_order_action" model="ir.actions.act_window">
+            <field name="name">Sales Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,kanban,form,activity</field>
+        </record>
+
+        <!-- Inherited Form Sales Order -->
+        <record id="sale_order_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name='paket_id'/>
+                </field>
+                <xpath expr="//page[@name='customer_signature']" position="after">
+                    <page string="Manifest">
+                        <field name="passport_line" widget="one2many_list" mode="tree,kanban" nolabel="1">
+                            <tree >
+                                <field name="title"/>
+                                <field name="nama_passport"/>
+                                <field name="jenis_kelamin"/>
+                                <field name="no_ktp"/>
+                                <field name="no_passport"/>
+                                <field name="tanggal_lahir"/>
+                                <field name="tempat_lahir"/>
+                                <field name="tanggal_berlaku"/>
+                                <field name="tanggal_expired"/>
+                                <field name="imigrasi"/>
+                                <field name="tipe_kamar"/>
+                                <field name="umur"/>
+                                <field name="mahrom_id"/>
+                                <field name="agent_id"/>
+                                <!-- <field name="sale_id"/> -->
+                            </tree>
+                            <form string="">
+                                <sheet>
+                                    <group >
+                                        <h2 style="color:#008DCA; width:100%; background-color:#E5EDEC;">Personal</h2>
+                                    </group>
+                                    <group>
+                                        <group >
+                                            <field name="title"/>
+                                            <field name="jamaah_id" required="True"/>
+                                            <field name="tipe_kamar" required="True"/>
+                                            <field name="tanggal_lahir"/>
+                                        </group>
+                                        <group>
+                                            <field name="no_ktp"/>
+                                            <field name="mahrom_id"/>
+                                            <field name="umur"/>
+                                            <field name="tempat_lahir"/>
+                                        </group>
+                                    </group>
+                                    <group >
+                                        <h2 style="color:#008DCA; width:100%; background-color:#E5EDEC;">Passport</h2>
+                                    </group>
+                                    <group>
+                                        <group >
+                                            <field name="no_passport"/>
+                                            <field name="tanggal_berlaku"/>
+                                            <field name="imigrasi"/>
+                                        </group>
+                                        <group>
+                                            <field name="nama_passport"/>
+                                            <field name="tanggal_expired"/>
+                                            <field name="notes"/>
+                                        </group>
+                                    </group>
+                                    <group >
+                                        <h2 style="color:#008DCA; width:100%; background-color:#E5EDEC;">Scan Document</h2>
+                                    </group>
+                                    <group>
+                                        <group >
+                                            <field name="scan_passport" widget='image'/>
+                                            <field name="scan_ktp" widget='image'/>
+                                        </group>
+                                        <group>
+                                            <field name="scan_buku_nikah" widget='image'/>
+                                            <field name="scan_kartu_keluarga" widget='image'/>
+                                        </group>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

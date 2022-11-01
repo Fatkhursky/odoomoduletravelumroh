@@ -1,0 +1,37 @@
+<odoo>
+ 
+ 
+    <!-- Membuat Category Group Travel -->
+ 
+    <record id="module_category_travel_odoo" model="ir.module.category">
+        <field name="name">Travel</field>
+    </record>
+ 
+    <!-- Membuat Group Travel -->
+ 
+    <record id="group_travel_read" model="res.groups">
+        <field name="name">Travel / Read</field>
+        <field name="category_id" ref="module_category_travel_odoo"/>
+    </record>
+ 
+    <record id="group_travel_create" model="res.groups">
+        <field name="name">Travel / Create</field>
+        <field name="category_id" ref="module_category_travel_odoo"/>
+        <field name="implied_ids" eval="[(4, ref('group_travel_read'))]"/>
+    </record>
+ 
+    <record id="group_travel_update" model="res.groups">
+        <field name="name">Travel / Update</field>
+        <field name="category_id" ref="module_category_travel_odoo"/>
+        <field name="implied_ids" eval="[(4, ref('group_travel_create'))]"/>
+    </record>
+ 
+    <record id="group_travel_delete" model="res.groups">
+        <field name="name">Travel / Delete</field>
+        <field name="category_id" ref="module_category_travel_odoo"/>
+        <field name="implied_ids" eval="[(4, ref('group_travel_update'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+ 
+ 
+</odoo>

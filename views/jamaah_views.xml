@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+
+
+
+        <!-- Membuat Action/Event Jamaah -->
+        <record id="jamaah_action" model="ir.actions.act_window">
+            <field name="name">Jamaah</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+        </record>
+
+ 
+    </data>
+</odoo>

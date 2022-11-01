@@ -1,0 +1,43 @@
+<odoo>
+
+
+    <!-- Action/Event Report PDF Sales Order -->
+       <record id="report_pdf_travel_umroh_action" model="ir.actions.report">
+            <field name="name">Travel Umroh (PDF)</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ab_travel_umroh.picking_form</field>
+            <field name="report_file">ab_travel_umroh.picking_form_operations</field>
+            <field name="print_report_name">'Travel - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+    <!-- Action/Event Report Excel -->
+    <record id="report_travel_umroh_action" model="ir.actions.report">
+        <field name="name">Travel Umroh (XLSX)</field>
+        <field name="model">travel.package</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">travel_umroh.report_travel</field>
+        <field name="report_file">travel_umroh.report_travel_umroh</field>
+        <field name="print_report_name">'Travel - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_travel_package"/>
+        <field name="binding_view_types">form</field>
+    </record>
+
+
+     <!-- Action/Event Report PDF Invoice Order -->
+    <record id="report_pdf_travel_invoice_action" model="ir.actions.report">
+        <field name="name">Cetak Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ab_travel_umroh.move_form</field>
+        <field name="report_file">ab_travel_umroh.move_form</field>
+        <field name="print_report_name">'Travel - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>   

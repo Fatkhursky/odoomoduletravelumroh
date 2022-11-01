@@ -1,0 +1,152 @@
+<odoo>
+
+    <template id="picking_form">
+
+        <xpath expr="//div[@class='header']" position="replace">
+            <div class="header" style="display:flex; align-items:center; justify-content:center; text-align:center; height:150px;">
+                  <h1 style="text-bold; height:100px; padding-top:55px;">
+                            <strong>Delivery Order</strong>
+                  </h1>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@class='footer']" position="replace">
+            <div class="footer">
+                <!--  code -->
+            </div>
+        </xpath>
+
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+              
+                    <div class="page">
+
+                        
+                        <div class="row">
+
+
+                            <table style="width:50%; margin-left:10px;">
+                                <tbody >
+                                    <tr style="">
+                                        <td style="width:25%; border-right:0.5pt solid grey;  padding:5px; font-weight: bold;">Customer</td>
+                                        <td style="width:75%;padding:5px;">
+
+                                            <t t-esc="name"/>
+                                            <p t-field="o.partner_id"></p>
+                                        </td>
+                                    </tr>
+                                    <tr style=";">
+                                        <td style="width:25%; border-right:0.5pt solid grey; padding:5px; font-weight: bold;">Address</td>
+                                        <td style="width:75%;padding:5px; ">
+
+
+                                            <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["city"], "no_marker": True}'/>
+                                        </td>
+                                    </tr>
+                                    <tr style=";">
+                                        <td style="width:25%; border-right:0.5pt solid grey; padding:5px;  font-weight: bold;">Mobile</td>
+                                        <td style="width:75%;padding:5px;">
+
+                                            <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["mobile"], "no_marker": True}'/>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <table style="width:50%">
+                                <tbody>
+                                    <tr style="">
+                                        <td style="width:25%; border-right:0.5pt solid grey;  padding:5px; font-weight: bold;">No</td>
+                                        <td style="width:75%;padding:5px;">
+
+                                            <p t-field="o.name"></p>
+                                        </td>
+                                    </tr>
+                                    <tr style="">
+                                        <td style="width:25%; border-right:0.5pt solid grey;  padding:5px; font-weight: bold;">Tanggal</td>
+                                        <td style="width:75%;padding:5px;">
+
+                                            <t t-if="o.scheduled_date">
+                                                <t t-esc="o.scheduled_date.strftime('%d %B %Y')"/>
+                                            </t>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>
+                        <table class="table table-sm" t-if="o.move_line_ids and o.move_ids_without_package">
+                            <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
+                            <t t-set="has_serial_number" t-value="any(move_line.lot_id or move_line.lot_name for move_line in o.move_line_ids)" groups="stock.group_production_lot"/>
+                            <thead>
+                                <tr>
+                                    <th name="th_product">
+                                        <strong>Product</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Quantity</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Unit of Measure</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.move_ids_without_package" t-as="move">
+                                    <!-- In case you come across duplicated lines, ask NIM or LAP -->
+                                    <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
+                                        <tr>
+                                            <td>
+                                                <span t-field="ml.product_id.display_name"/>
+                                                <br/>
+                                                <span t-field="ml.product_id.description_picking"/>
+                                            </td>
+                                            <td>
+                                                <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
+                                                <span t-if="o.state == 'done'" t-field="ml.qty_done"/>
+                                                <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
+
+                                            </td>
+
+                                            <td >
+                                                <p>Units</p>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <table style="height: 226px; width: 50%; margin-left: auto; margin-right: auto;  border: 1px solid; border-collapse: collapse;" border="2">
+                            <tbody>
+                                <tr style="height: 226px;">
+                                    <td style="width: 50%; height: 226px;">
+                                        <table style="height: 215px; width: 100.286%; border-collapse: collapse;" border="0">
+                                            <tbody>
+                                                <tr style="height: 18px;">
+                                                    <td style="width: 50%; text-align: center; height: 18px;">Mengetahui</td>
+                                                </tr>
+                                                <tr style="height: 183px;">
+                                                    <td style="width: 50%; height: 153px; text-align: center;"></td>
+                                                </tr>
+                                                <tr style="height: 5px;">
+                                                    <td style="width: 50%; height: 5px; text-align: center;">
+                                                        <p t-field="o.env.user.name"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
